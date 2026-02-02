@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Gestión de tareas</title>
+</head>
+<body>
+
+  <main>
+    <section class="postits">
+      <button class="nuevaTarea">NUEVA TAREA</button>
+      <div class="eliminar-area">Arrastra para eliminar</div>
+      <div class="overlay"></div>
+      <div class="postit-popup">
+        <img src="./assets/icons/close.svg" alt="close">
+        <form>
+          <input type="text" name="titulo-postit" placeholder="Nombre de la tarea...">
+          <textarea name="descripcion-postit" placeholder="Describe la tarea..." rows="10"></textarea>
+          <label class="selectorEstado">
+            <div>
+              <input type="radio" name="estado" id="pendiente" class="color-radio pendiente" checked>
+              <label for="pendiente">Pendiente</label>
+            </div>
+            <div>
+              <input type="radio" name="estado" id="enProceso" class="color-radio enProceso">
+              <label for="enProceso">En proceso</label>
+            </div>
+            <div>
+              <input type="radio" name="estado" id="finalizado" class="color-radio finalizado">
+              <label for="finalizado">Finalizada</label>
+            </div>
+          </label>
+          <button class="crearPostit">CREAR TAREA</button>
+        </form>
+      </div>
+      <div class="postit-area"></div>
+    </section>
+
+    <section class="estados">
+      <div class="pendiente">
+        <h2>PENDIENTE</h2>
+        <p>Tareas pendientes: <span>0</span></p>
+      </div>
+      <div class="enProceso">
+        <h2>EN PROCESO</h2>
+        <p>Tareas en proceso: <span>0</span></p>
+      </div>
+      <div class="finalizado">
+        <h2>FINALIZADA</h2>
+        <p>Tareas finalizadas: <span>0</span></p>
+      </div>
+    </section>
+  </main>
+
+  <div class="overlay-eliminar"></div>
+
+  <div class="modal-eliminar">
+    <h3>¿Quieres eliminar esta tarea?</h3>
+    <p>No podrás deshacer esta acción.</p>
+
+    <div class="modal-botones">
+      <button class="cancelar">Cancelar</button>
+      <button class="eliminar">Eliminar</button>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
+  crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
