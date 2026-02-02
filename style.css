@@ -16,7 +16,7 @@ main{
   width: 100%;
   display: flex;
   justify-content: space-between;
-  background-image: url('./assets/img/fondo-main-4.jpg');
+  background-image: url('./assets/img/fondo-main-4.jpg'); /*Fondo para estilizar un poco la aplicación*/
   background-size: cover;
 }
 
@@ -27,6 +27,7 @@ main{
   padding: 1em;
 }
 
+/*Estilo generalizado de botones*/
 button{
   font-weight: bold;
   border: 2px solid #303633;
@@ -35,6 +36,7 @@ button{
   width: 100%;
 }
 
+/*Botón de crear postit*/
 .nuevaTarea{
   background-color: gold;
   padding: 2em 1em;
@@ -46,6 +48,7 @@ button{
   opacity: 0.8;
 }
 
+/*Zona de eliminación donde arrastramos los postits*/
 .eliminar-area{
   position: absolute;
   bottom: 1em;
@@ -63,7 +66,7 @@ button{
 .eliminar-area.activa{
   background-color: lightcoral;
   opacity: 1;
-  padding: 4em 0;
+  padding: 4em 0; /*La hacemos crecer en vertical al ponernos encima*/
 }
 
 /*Popup + form para generar posit*/
@@ -119,6 +122,7 @@ input:focus, textarea:focus{
   border-radius: 4px;
 }
 
+/*No queremos que pueda cambiarse de tamaño, respetando así las dimensiones asignadas en el popup*/
 textarea {
   resize: none;
 }
@@ -145,12 +149,13 @@ input[type="text"]{
   cursor: pointer;
 }
 
+/*Botón de crear postit*/
 .crearPostit{
   background-color: lightgreen;
   width: 100%;
 }
 
-/*Fondo difuminado para crear postit y eliminar*/
+/*Fondo difuminado para los popups*/
 .overlay, .overlay-eliminar {
   position: fixed;
   inset: 0;
@@ -196,17 +201,18 @@ input[type="text"]{
   background-color: rgb(173, 216, 230, 0.6);
 } */
 
+
+/*He buscado como hacer que el color de los contenedores se difume de arriba hacia abajo*/
+/*Al mantener "opacity: 1" arriba, el texto y el contador se verán bien*/
 .estados .pendiente {
-  /* khaki con gradiente */
   background: linear-gradient(
     to bottom,
-    rgba(240, 230, 140, 1) 0%,   /* parte superior opaca */
-    rgba(240, 230, 140, 0.6) 100%  /* parte inferior más transparente */
+    rgba(240, 230, 140, 1) 0%,
+    rgba(240, 230, 140, 0.6) 100%
   );
 }
 
 .estados .enProceso {
-  /* pink con gradiente */
   background: linear-gradient(
     to bottom,
     rgba(255, 192, 203, 1) 0%,
@@ -215,7 +221,6 @@ input[type="text"]{
 }
 
 .estados .finalizado {
-  /* lightblue con gradiente */
   background: linear-gradient(
     to bottom,
     rgba(173, 216, 230, 1) 0%,
@@ -242,6 +247,7 @@ input[type="text"]{
   overflow: hidden;
 }
 
+/*Cambiamos el tipo de letra, haciendo que parezcan escritos a mano*/
 .tarea h3, .tarea p{
   font-family: handlee;
   font-weight: bolder;
@@ -261,10 +267,12 @@ input[type="text"]{
   /* border: 1px solid #303633; */
 }
 
+/*Colores relacionados con el estado que reutilizaremos bastante*/
 .pendiente{ background-color: khaki; }
 .enProceso{ background-color: pink; }
 .finalizado{ background-color: lightblue; }
 
+/*La barra de herramientas que contiene el botón de expandir*/
 .tarea .toolbar{
   display: flex;
   justify-content: flex-end;
@@ -274,6 +282,7 @@ input[type="text"]{
   user-select: none;
 }
 
+/*modificamos el cursor para dar sensación de agarre*/
 .tarea .toolbar:active{
   cursor: grabbing;
 }
@@ -283,6 +292,7 @@ input[type="text"]{
   padding: 3px;
 }
 
+/*De normal, el postit aparece plegado*/
 .tarea .descripcion{
   display: none;
 }
@@ -300,11 +310,14 @@ input[type="text"]{
   transition: transform 0.2s;
 }
 
+/*Animación para rotar el icono de expandir, haciendo que sea reutilizable para plegar*/
 .tarea.expandido .expandir{
   transform: rotate(180deg);
 }
 
-/*Simular placeholder para el título y el párrafo de la descripción del post-it*/
+/*Quería dar la posibilidad de generar postits vacíos, pero al estar vacíos no se aprecian bien las zonas que ocupan el título y la descripción.
+Por ello, he buscado cómo simular un placeholder como los que se usan en un textarea, valiéndome de un atributo al que he llamado data-placeholder
+para controlar que aparezca un texto predeterminado que muestre al usuario dónde escribir sin necesidad de usar bordes ni cajas*/
 .titulo:empty::before {
   content: attr(data-placeholder);
   color: #777;

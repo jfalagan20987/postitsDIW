@@ -1,3 +1,4 @@
+//Cargamos postits del local storage
 $(document).ready(() => {
   cargarPostits();
 });
@@ -9,9 +10,11 @@ let zindex = 1; //Para controlar que al agarrar un post-it venga al frente
 //Mostrar y ocultar el popup
 const $popup = $('.postit-popup');
 
+//Evento al hacer click en el botón de "Nueva tarea"
 $(".nuevaTarea").on("click", () =>{
   $(".overlay").fadeIn(200);
 
+  //Animación y estilo del popup
   $popup.css({
       opacity: 0,
       top: "45%"
@@ -21,6 +24,7 @@ $(".nuevaTarea").on("click", () =>{
     }, 300);
 });
 
+//Animación y estilo al cerrar el popup
 function cerrarPopup() {
   $popup.animate({
     opacity: 0,
@@ -32,10 +36,11 @@ function cerrarPopup() {
   $(".overlay").fadeOut(200);
 }
 
+//Opción de cerrar el popup tanto al hacer click en la X como fuera del popup
 $(".postit-popup img").on("click", cerrarPopup);
 $(".overlay").on("click", cerrarPopup);
 
-//Controlar color del fondo del popup
+//Controlar color del fondo del popup en base al estado
 function cambiarColor() {
   $popup.removeClass('pendiente enProceso finalizado');
 
@@ -65,7 +70,7 @@ $(".crearPostit").on("click", function(e){
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
 
-  //Estructura del postit
+  //Estructura del postit || data-id para diferenciarlos || data-estado para clasificarlos
   const $postit = $(`
     <div class="tarea ${estado}" data-id="${counter}" data-estado="${estado}">
       <div class="toolbar">
@@ -78,9 +83,9 @@ $(".crearPostit").on("click", function(e){
 
   counter++; //Sumamos para controlar los id
 
-  $postit.css({ top: y, left: x });
+  $postit.css({ top: y, left: x }); //Asignamos la posición aleatoria
 
-  $(".postit-area").append($postit);
+  $(".postit-area").append($postit); //Añadimos el postit al área
 
   //Control de arrastre del postit
   $postit.draggable({
@@ -101,48 +106,47 @@ $(".crearPostit").on("click", function(e){
   $("input[name=titulo-postit]").val("");
   $("textarea[name=descripcion-postit]").val("");
 
-  guardarPostits();
+  guardarPostits(); //Guardamos en local storage
 });
 
-//Control de contadores para cada categoría
+//Control de contadores para cada categoría -- Al seleccionar mediante la clase "dentro", generamos un array. De esta manera, con su longitud ya tenemos el contador
 function actualizarContadores(){
-  $(".estados .pendiente span").text(
-    $(".tarea.pendiente.dentro").length
-  );
+  $(".estados .pendiente span").text($(".tarea.pendiente.dentro").length);
 
-  $(".estados .enProceso span").text(
-    $(".tarea.enProceso.dentro").length
-  );
+  $(".estados .enProceso span").text($(".tarea.enProceso.dentro").length);
 
-  $(".estados .finalizado span").text(
-    $(".tarea.finalizado.dentro").length
-  );
+  $(".estados .finalizado span").text($(".tarea.finalizado.dentro").length);
 }
 
 //Control para plegar y expandir el postit
 $(document).on("click", ".expandir", function() {
   const $postit = $(this).closest(".tarea");
   $postit.toggleClass("expandido");
-  guardarPostits();
+  guardarPostits(); //Esto también lo guardamos en el local storage, para que el usuario se encuentre todo tal y como lo dejó
 });
 
-//Categorías droppable - Qué aceptan y qué no
+//Estados droppable - Aceptan postits (.tarea) - Ajustan estado según contenedor - Añaden o quitan clase "dentro"
+//PENDIENTE
 $(".estados .pendiente").droppable({
   accept: ".tarea",
   drop: function(event, ui){
     ui.draggable
       .removeClass("pendiente enProceso finalizado")
-      .addClass("pendiente dentro");  // ✅ clase "dentro"
+      .addClass("pendiente dentro");
     ui.draggable.attr("data-estado", "pendiente");
 
     actualizarContadores();
   },
   out: function(event, ui){
-    ui.draggable.removeClass("dentro"); // ✅ quitar al salir
+    ui.draggable.removeClass("dentro");
     actualizarContadores();
   }
+
+  //Con drop y out conseguimos que solo se modifique el estado una vez soltamos dentro del contenedor correspondiente.
+  //Esto lo hago para evitar que, al arrastrar hasta la zona de eliminación, el color no vaya cambiando constantemente según pasa por encima de los distintos estados.
 });
 
+//EN PROCESO
 $(".estados .enProceso").droppable({
   accept: ".tarea",
   drop: function(event, ui){
@@ -159,6 +163,7 @@ $(".estados .enProceso").droppable({
   }
 });
 
+//FINALIZADO
 $(".estados .finalizado").droppable({
   accept: ".tarea",
   drop: function(event, ui){
@@ -186,6 +191,7 @@ function dropPostit($postit, tipo){
 $(".eliminar-area").droppable({
   accept: ".tarea",
 
+  //Al pasar por encima de la zona de eliminación con un postit, activamos la clase que le cambia el estilo para indicar que ya se puede soltar
   over: function () {
     $(this).addClass("activa");
   },

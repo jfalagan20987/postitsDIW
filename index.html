@@ -9,13 +9,19 @@
 </head>
 <body>
 
+  <!--Main dividido en dos grandes sections: una donde generamos y eliminamos los postits, otra donde los clasificamos por estado-->
   <main>
     <section class="postits">
+
       <button class="nuevaTarea">NUEVA TAREA</button>
       <div class="eliminar-area">Arrastra para eliminar</div>
+
+      <!--Popup con su contenedor overlay para difuminar el fondo-->
       <div class="overlay"></div>
       <div class="postit-popup">
         <img src="./assets/icons/close.svg" alt="close">
+
+        <!--En el form ya damos la opción de seleccionar el estado de la tarea, por si nos hemos olvidado de apuntarla cuando ya estaba iniciada o finalizada-->
         <form>
           <input type="text" name="titulo-postit" placeholder="Nombre de la tarea...">
           <textarea name="descripcion-postit" placeholder="Describe la tarea..." rows="10"></textarea>
@@ -36,9 +42,12 @@
           <button class="crearPostit">CREAR TAREA</button>
         </form>
       </div>
+
+      <!--Área donde caerá el postit con posición aleatoria-->
       <div class="postit-area"></div>
     </section>
 
+    <!--Sección con los tres estados y sus respectivos contadores-->
     <section class="estados">
       <div class="pendiente">
         <h2>PENDIENTE</h2>
@@ -55,6 +64,7 @@
     </section>
   </main>
 
+  <!--Fuera del main, generaremos con jQuery el popup para confirmar o cancelar la eliminación de los postits-->
   <div class="overlay-eliminar"></div>
 
   <div class="modal-eliminar">
