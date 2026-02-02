@@ -74,10 +74,11 @@ $(".crearPostit").on("click", function(e){
   const $postit = $(`
     <div class="tarea ${estado}" data-id="${counter}" data-estado="${estado}">
       <div class="toolbar">
+        <img class="arrastrar" src="./assets/icons/drag-zone.png">
         <img class="expandir" src="./assets/icons/open.svg">
       </div>
-      <h3 contenteditable="true" class="titulo" data-placeholder="Sin título">${titulo}</h3>
-      <p contenteditable="true" class="descripcion" data-placeholder="Describe la tarea...">${descripcion}</p>
+      <h3 contenteditable="true" class="titulo" data-placeholder="Sin título" spellcheck="false">${titulo}</h3>
+      <p contenteditable="true" class="descripcion" data-placeholder="Describe la tarea..." spellcheck="false">${descripcion}</p>
     </div>
   `);
 
@@ -200,6 +201,8 @@ $(".eliminar-area").droppable({
     $(this).removeClass("activa");
   },
 
+
+  //Al hacer drop sobre la zona, se elimina el postit y salta el mensaje de confirmación
   drop: function (event, ui) {
     postitAEliminar = ui.draggable;
 
@@ -287,10 +290,11 @@ function cargarPostits() {
     const $postit = $(`
       <div class="tarea ${p.estado}" data-id="${p.id}" data-estado="${p.estado}">
         <div class="toolbar">
+          <img class="arrastrar" src="./assets/icons/drag-zone.png">
           <img class="expandir" src="./assets/icons/open.svg">
         </div>
-        <h3 contenteditable="true" class="titulo" data-placeholder="Sin título">${p.titulo}</h3>
-        <p contenteditable="true" class="descripcion" data-placeholder="Describe la tarea...">${p.descripcion}</p>
+        <h3 contenteditable="true" class="titulo" data-placeholder="Sin título" spellcheck="false">${p.titulo}</h3>
+        <p contenteditable="true" class="descripcion" data-placeholder="Describe la tarea..." spellcheck="false">${p.descripcion}</p>
       </div>
     `);
 
@@ -316,3 +320,28 @@ function cargarPostits() {
 }
 
 $(document).on("input", ".tarea .titulo, .tarea .descripcion", () => guardarPostits());
+
+//Esta es la manera que he encontrado para recuperar los placeholder de los postits
+$(document).on("blur", ".tarea .titulo, .tarea .descripcion", function () {
+  const texto = $(this).text().trim();
+
+  if (texto === "") {
+    $(this).text("");
+  }
+
+  guardarPostits();
+});
+
+//Evitar saltos de línea en el título
+$(document).on("keydown", ".tarea .titulo", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+  }
+});
+
+$(document).on("keydown", ".tarea .descripcion", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    document.execCommand("insertLineBreak");
+  }
+});
