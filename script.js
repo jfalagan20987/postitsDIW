@@ -236,6 +236,7 @@ function abrirModalEliminar() {
     );
 }
 
+//Animación al cerrar el modal
 function cerrarModalEliminar() {
   $(".modal-eliminar").fadeOut(200);
   $(".overlay-eliminar").fadeOut(200);
